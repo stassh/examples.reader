@@ -1,20 +1,29 @@
 package com.stassh.reader;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.stassh.reader.di.AppComponent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.stassh.reader.model.Opds;
 import com.stassh.reader.model.Settings;
 import javax.inject.Inject;
+
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -22,10 +31,14 @@ public class MainActivity extends AppCompatActivity
   @Inject
   Settings settings;
 
+  @BindView(R.id.home_catalog_list)  ListView listView;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    ButterKnife.bind(this);
+
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -44,6 +57,9 @@ public class MainActivity extends AppCompatActivity
 
     //inject all
     ReaderApp.get(this).getComponent().inject(this);
+
+    listView.setAdapter(new HomeCatalogAdapter(settings.getOpdsList()));
+
   }
 
   @Override

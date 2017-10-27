@@ -22,4 +22,8 @@ public class Settings {
     opdsList.add(value);
     opdsList.add(value);
   }
+
+  public List<Opds> getOpdsList() {
+    return opdsList;
+  }
 }
